@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html> 
+  <body> 
+    <form onsubmit="savetoLocalStorage(event)">  
+      <label>Name</label>
+      <input id ='name' type ="text" name ="username" required/>
+      <label>EMail</label>
+      <input id ='email' type ="text" name ="email" required/>
+      
+      <button>Sumbit</button>
+    </form>
+    <ul id="ListofUsers"> </ul>
+    <script> 
+    function savetoLocalStorage(event){
+      event.preventDefault();
+      const name = event.target.username.value;
+      const email =event.target.email.value;
+      
+      //localStorage.setItem("name",name);
+     // localStorage.setItem("email",email);
+      
+      const obj ={
+        name,
+        email
+        
+      }
+      localStorage.setItem(obj.email, JSON.stringify(obj));
+      showNewUsersOnScreen(obj);
+    }
+     window.addEventListener('DOMContentLoaded', () => {
+         const localStorageObj =localStorage;
+         const localStoragekeys = Object.keys(localStorageObj)
+
+         for(var i=0; i<localStoragekeys.length;i++){
+             const key =localStoragekeys[i];
+             const editUserDetailsString =localStorageobj[keys];
+             const editUserDetailsobj=JSON.parse(editUserDetailsString);
+             showNewUsersOnScreen(editUserDetailsobj);
+         }
+     });
+    function showNewUsersOnScreen(user){
+     const parentNode = document.getElementById("ListofUsers");
+     const childHTML = `<li id =${user.email}> ${user.name}- ${user.email} <button  onclick= deleteUser('${user.email}')>Delete</button>
+        <button  onclick= editUserDetails('${user.email}','${user.name}')>Edit</button></li>`
+     parentNode.innerHTML = parentNode.innerHTML+ childHTML;
+    }
+
+    function editUserDetails(email, name){
+        
+        document.getElementById('email').value=email;
+        document.getElementById('name').value= name;
+        deleteUser(email);
+    }
+    
+    function deleteUser(email){
+        console.log(email)
+        localStorage.removeItem(email);
+        removeUserFromScreen(email);
+    }
+    function removeUserFromScreen(email){
+const parentNode =document.getElementById('ListofUsers');
+const chidNodeToDelete = document.getElementById(email);
+parentNode.removeChild(chidNodeToDelete);
+    }
+    
+    
+    
+   
+    </script>
+  </body>
+</html
